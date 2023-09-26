@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="NeuRBF: A Neural Fields Representation with Adaptive Radial Basis Functions">
+  <meta name="keywords" content="neural fields, nerf, implicit neural representation, computer vision">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NeuRBF: A Neural Fields Representation with Adaptive Radial Basis Functions</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="./static/css/before_after.css">
+  <!-- <link rel="icon" href="./static/images/cameraicon.svg"> -->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <link rel="stylesheet" href="./static/css/magnify.css">
+  <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+  <script src="./static/js/jquery.magnify.js"></script>
+
+  <script src="twentytwenty/js/jquery-3.2.1.min.js" defer type="text/javascript"></script>
+  <script src="twentytwenty/js/jquery.event.move.js" defer type="text/javascript"></script>
+  <script src="twentytwenty/js/jquery.twentytwenty.js" defer type="text/javascript"></script>
+  <link rel="stylesheet" href="twentytwenty/css/twentytwenty.css" type="text/css" media="screen" />
+</head>
+
+<body>
+
+
+
+
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://zhangchen8.github.io">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+    </div>
+
+  </div>
+</nav>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title"><b>NeuRBF</b>: A Neural Fields Representation with Adaptive Radial Basis Functions</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://zhangchen8.github.io">Zhang Chen</a><sup>1</sup>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span class="author-block">
+              <a href="https://sites.google.com/site/lizhong19900216">Zhong Li</a><sup>1</sup>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span class="author-block">
+               <a href="https://lsongx.github.io">Liangchen Song</a><sup>2</sup>&nbsp;&nbsp;&nbsp;&nbsp;
+            </span>
+            <span class="author-block">
+               <a href="https://lelechen63.github.io">Lele Chen</a><sup>1</sup>&nbsp;&nbsp;&nbsp;&nbsp;
+            </span>
+            <span class="author-block">
+             <a href="https://vic.shanghaitech.edu.cn/vrvc/en/people/jingyi-yu">Jingyi Yu</a><sup>3</sup>&nbsp;&nbsp;&nbsp;&nbsp;
+            </span>
+            <span class="author-block">
+              <a href="https://cse.buffalo.edu/~jsyuan">Junsong Yuan</a><sup>2</sup>&nbsp;&nbsp;&nbsp;&nbsp;
+            </span>
+            <span class="author-block">
+              <a href="https://www.linkedin.com/in/yi-xu-42654823">Yi Xu</a><sup>1</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+
+            <span class="author-block"><sup>1</sup>OPPO US Research Center &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span class="author-block"><sup>2</sup>University at Buffalo &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span class="author-block"><sup>3</sup>ShanghaiTech University</span>
+            <p>&nbsp;</p>
+            <h2 class="title is-3">ICCV 2023 (Oral Presentation)</h2>
+            <!-- <span class="author-block"><sup></span> -->
+          </div>
+          <p>&nbsp;</p>
+          <script>
+            $(document).ready(function() {
+              // var $zoom = $('.zoom').magnify(
+              // //   {
+              // //   magnifiedWidth: 1000,
+              // //   magnifiedHeight: 753
+              // // }
+              // );
+              // $zoom.destroy();
+            });
+          </script>
+<style>
+.magnify > .magnify-lens {
+  width: 130px;
+  height: 130px;
+}
+</style>
+
+<style>
+  /* Style the buttons */
+  .btn {
+    border: none;
+    outline: none;
+    padding: 10px 16px;
+    background-color: #f1f1f1;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 8px;
+  }
+  
+  /* Style the active class, and buttons on mouse-over */
+  .active, .btn:hover {
+    background-color: #666;
+    color: white;
+  }
+
+  /* .twentytwenty-container {
+    min-height: 200px;
+} */
+
+  </style>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://youtu.be/lqZ2FPktj3g"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/oppo-us-research/NeuRBF"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+              <!-- <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="far fa-images"></i>
+                  </span>
+                  <span>Data</span>
+                  </a> -->
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div id="results-carousel" class="carousel results-carousel">
+        <div class="item item-img_pearl">
+          <video poster="" id="img_pearl" autoplay controls muted loop playsinline height="100%">
+            <source src="./videos/img_pearl.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-sdf_mechanism">
+          <video poster="" id="sdf_mechanism" autoplay controls muted loop playsinline height="100%">
+            <source src="./videos/sdf_mechanism.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-nerf_syn_materials">
+          <video poster="" id="nerf_syn_materials" autoplay controls muted loop playsinline height="100%">
+            <source src="./videos/nerf_syn_materials.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-nerf_llff_horns">
+          <video poster="" id="nerf_llff_horns" autoplay controls muted loop playsinline height="100%">
+            <source src="./videos/nerf_llff_horns.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-img_pluto">
+          <video poster="" id="img_pluto" autoplay controls muted loop playsinline height="100%">
+            <source src="./videos/img_pluto.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-sdf_david">
+          <video poster="" id="sdf_david" autoplay controls muted loop playsinline height="100%">
+            <source src="./videos/sdf_david.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-nerf_syn_mic">
+          <video poster="" id="nerf_syn_mic" autoplay controls muted loop playsinline height="100%">
+            <source src="./videos/nerf_syn_mic.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-nerf_llff_flower">
+          <video poster="" id="nerf_llff_flower" autoplay controls muted loop playsinline height="100%">
+            <source src="./videos/nerf_llff_flower.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+    <div  class="columns is-centered has-text-centered" style="text-align: center;">  
+       <p><br/>Our method achieves high representation accuracy and compact model size for neural fields, and can be applied to various tasks including <b>2D image fitting</b>, <b>3D SDF fitting</b> and <b>NeRF</b>.</p> </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            We present a novel type of neural fields that uses general radial bases for signal representation. State-of-the-art neural fields typically rely on grid-based representations for storing local neural features and N-dimensional linear kernels for interpolating features at continuous query points. The spatial positions of their neural features are fixed on grid nodes and cannot well adapt to target signals.
+          </p>
+          <p>
+            Our method instead builds upon general radial bases with flexible kernel position and shape, which have higher spatial adaptivity and can more closely fit target signals. To further improve the channel-wise capacity of radial basis functions, we propose to compose them with multi-frequency sinusoid functions. This technique extends a radial basis to multiple Fourier radial bases of different frequency bands without requiring extra parameters, facilitating the representation of details. Moreover, by marrying adaptive radial bases with grid-based ones, our hybrid combination inherits both adaptivity and interpolation smoothness. We carefully designed weighting schemes to let radial bases adapt to different types of signals effectively.
+          </p>
+          <p>
+            Our experiments on 2D image and 3D signed distance field representation demonstrate the higher accuracy and compactness of our method than prior arts. When applied to neural radiance field reconstruction, our method achieves state-of-the-art rendering quality, with small model size and comparable training speed.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+    <!-- Paper video. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <iframe width="560" height="315" src="" title="YouTube video player" frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+    <!--/ Paper video. -->
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Overview</h2>
+        <div class="content has-text-justified">
+          We generalize grid-based local neural fields to be using anisotropic radial basis functions (RBFs), which can have flexible patterns ranging from circle, ellipse to even close to a line. 3D Gaussian is also an instance of the RBF family: input domain = 3D, kernel function = Gaussian.
+          <br> <br>
+          <center>
+            <img src="./static/images/pipeline.png"  width="1000">
+          </center>
+        <br> 
+        We further compose RBFs with multi-frequency sinusoid functions to improve their channel-wise capacity. This technique extends an RBF to multiple radial bases of different frequencies. <br> <br>
+        <center>
+          <img src="./static/images/basis_comparison.png"  width="400">
+        </center>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Results</h2>
+        <div class="content has-text-justified">
+
+          <h3 class="title is-4">Gigapixel Image</h3>
+
+          <center>
+          <video poster="" id="img_shibuya" autoplay controls muted loop playsinline width="100%">
+            <source src="./videos/img_shibuya.mp4"
+                    type="video/mp4">
+          </video>
+          </center>
+
+          <br>
+          <h3 class="title is-4">Neural Radiance Fields</h3>
+
+          <center>
+            <img src="./static/images/nerf_syn_fig.png"  width="500">
+          </center>
+
+          <style>
+            .grid-container {
+              display: grid;
+              grid-template-columns: repeat(2, 1fr); /* Creates 2 columns with equal width */
+              grid-gap: 10px; /* Adjust the gap between the divs */
+            }
+            .grid-item {
+              width: 100%;
+            }
+          </style>
+
+          <br>
+          <div class="grid-container">
+            <div class="grid-item">
+              <div class="compare" style="width: 467px; margin-right: 20px;">
+                <img class="slider-image" style="width: 467px" src="./static/images/nerf_syn_materials_ngp.png" />
+                <img class="slider-image" style="width: 467px" src="./static/images/nerf_syn_materials_rbf.png" />
+              </div>
+            </div>
+            <div class="grid-item">
+              <div class="compare" style="width: 467px;">
+                <img class="slider-image" style="width: 467px" src="./static/images/nerf_syn_lego_pointnerf.png" />
+                <img class="slider-image" style="width: 467px" src="./static/images/nerf_syn_lego_rbf.png" />
+              </div>
+            </div>
+            <div class="grid-item">
+              <div>
+                <span style="display: inline; text-align: left; margin-right: 335px;"><b>Instant NGP</b></span>
+                <span style="display: inline; text-align: right;"><b>Ours</b></span>
+              </div>
+            </div>
+            <div class="grid-item">
+              <div>
+                <span style="display: inline; text-align: left; margin-right: 340px;"><b>Point-NeRF</b></span>
+                <span style="display: inline; text-align: right;"><b>Ours</b></span>
+              </div>
+            </div>
+          </div>
+
+          <br>
+          <br>
+          <div class="grid-container">
+            <div class="grid-item">
+              <div class="compare" style="width: 467px; margin-right: 20px;">
+                <img class="slider-image" style="width: 467px" src="./static/images/nerf_llff_trex_tensorf.png" />
+                <img class="slider-image" style="width: 467px" src="./static/images/nerf_llff_trex_rbf.png" />
+              </div>
+            </div>
+            <div class="grid-item">
+              <div class="compare" style="width: 467px;">
+                <img class="slider-image" style="width: 467px" src="./static/images/nerf_llff_room_kplane.png" />
+                <img class="slider-image" style="width: 467px" src="./static/images/nerf_llff_room_rbf.png" />
+              </div>
+            </div>
+            <div class="grid-item">
+              <div>
+                <span style="display: inline; text-align: left; margin-right: 360px;"><b>TensoRF</b></span>
+                <span style="display: inline; text-align: right;"><b>Ours</b></span>
+              </div>
+            </div>
+            <div class="grid-item">
+              <div>
+                <span style="display: inline; text-align: left; margin-right: 360px;"><b>K-Planes</b></span>
+                <span style="display: inline; text-align: right;"><b>Ours</b></span>
+              </div>
+            </div>
+          </div>
+
+          <br>
+          <h3 class="title is-4">Signed Distance Function</h3>
+
+          <div class="grid-container">
+            <div class="grid-item">
+              <div class="compare" style="width: 467px; margin-right: 20px;">
+                <img class="slider-image" style="width: 467px" src="./static/images/sdf_statuette_ngp.png" />
+                <img class="slider-image" style="width: 467px" src="./static/images/sdf_statuette_rbf.png" />
+              </div>
+            </div>
+            <div class="grid-item">
+              <div class="compare" style="width: 467px;">
+                <img class="slider-image" style="width: 467px" src="./static/images/sdf_lucy_nglod.png" />
+                <img class="slider-image" style="width: 467px" src="./static/images/sdf_lucy_rbf.png" />
+              </div>
+            </div>
+            <div class="grid-item">
+              <div>
+                <span style="display: inline; text-align: left; margin-right: 335px;"><b>Instant NGP</b></span>
+                <span style="display: inline; text-align: right;"><b>Ours</b></span>
+              </div>
+            </div>
+            <div class="grid-item">
+              <div>
+                <span style="display: inline; text-align: left; margin-right: 360px;"><b>NGLOD6</b></span>
+                <span style="display: inline; text-align: right;"><b>Ours</b></span>
+              </div>
+            </div>
+          </div>
+
+           </div>
+          
+        </div>
+      </div>
+    </div>
+    <!-- <div class="columns is-centered has-text-centered">
+      <div class="column is-full-width">
+        <div class="content has-text-justified">
+          
+        <script>
+    
+        $(window).on('load',function() {
+          $("#images_t").twentytwenty({
+    default_offset_pct: 0.5, // How much of the before image is visible when the page loads
+    orientation: 'horizontal', // Orientation of the before and after images ('horizontal' or 'vertical')
+    before_label: 'Input', // Set a custom before label
+    after_label: 'Output', // Set a custom after label
+    no_overlay: true, //Do not show the overlay with before and after
+    move_slider_on_hover: true, // Move slider on mouse hover?
+    move_with_handle_only: true, // Allow a user to swipe anywhere on the image to control slider movement. 
+    click_to_move: true // Allow a user to click (or tap) anywhere on the image to move the slider to that location.
+  });
+        });
+        </script>
+          
+        </div>
+      </div>
+    </div> -->
+    
+  </div>
+</section>
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title" style="text-align: center;">BibTeX</h2>
+    <pre><code>@inproceedings{chen2023neurbf,
+      title={NeuRBF: A Neural Fields Representation with Adaptive Radial Basis Functions},
+      author={Chen, Zhang and Li, Zhong and Song, Liangchen and Chen, Lele and Yu, Jingyi and Yuan, Junsong and Xu, Yi},
+      booktitle={Proceedings of the IEEE/CVF International Conference on Computer Vision},
+      year={2023}
+    }</code></pre>
+</div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/oppo-us-research/NeuRBF" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            This great website template was borrowed from <a
+              href="https://github.com/nerfies/nerfies.github.io">nerfies</a> and <a
+              href="https://github.com/defocus-control/defocus-control.github.io">DC<sup>2</sup></a>!
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
